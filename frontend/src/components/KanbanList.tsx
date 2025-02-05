@@ -22,7 +22,7 @@ const KanbanList: React.FC<KanbanListProps> = ({ listID, title, cards, onDeleteC
         flexDirection: 'row'
       }}
     >
-      <Droppable droppableId={String(listID)} direction="horizontal">
+      <Droppable droppableId={String(listID)} >
         {(provided) => (
           <Grid item {...provided.droppableProps} ref={provided.innerRef}>
             <Typography
@@ -36,7 +36,7 @@ const KanbanList: React.FC<KanbanListProps> = ({ listID, title, cards, onDeleteC
               {title}
             </Typography>
 
-            <Grid item sx={{ display: 'flex', flexDirection: 'row', gap: 2, overflowX: 'auto', maxWidth: '100%' }}>
+            <Grid item sx={{ display: 'flex', flexDirection: 'column', gap: 2, overflowX: 'auto', maxWidth: '100%' }}>
               {cards.map((card, index) => (
                 <KanbanCard
                   key={card.id}
