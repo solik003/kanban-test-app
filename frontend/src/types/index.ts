@@ -2,7 +2,7 @@
 export interface Card {
     id: string;
     title: string;
-    text: string;
+    desc: string;
 }
 export interface List {
     id: string;
@@ -38,8 +38,22 @@ export interface KanbanCardProps {
 
 
 export interface KanbanBoardProps {
-    board: {
-        lists: List[];
-    };
-    sort: (source: { droppableId: string; index: number }, destination: { droppableId: string; index: number }, draggableId: string) => void;
+    boardId: string;
+}
+
+export interface KanbanState {
+    lists: List[];
+}
+
+export interface KanbanModalProps {
+    open: boolean;
+    setOpen: (open: boolean) => void;
+    cardTitle: string;
+    cardDesc: string;
+    onUpdateCard: (updatedTitle: string, updatedDesc: string) => void;
+    onAddCard?: (newTitle: string, newDesc: string) => void;
+    onDeleteCard: (cardID: string) => void;
+    listID: string;
+    cardID: string;
+    type: string;
 }

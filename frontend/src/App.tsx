@@ -1,18 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Provider } from 'react-redux';
+import { store } from './redux/store/store';
 import KanbanBoard from './containers/KanbanBoard';
-import { initialBoard } from './data';
 
 const App: React.FC = () => {
-  const [board, setBoard] = useState(initialBoard);
-
-  const sort = () => { };
-
   return (
-    <div style={{ padding: 20 }}>
-      <KanbanBoard board={board} sort={sort} />
-    </div>
+    <Provider store={store}>
+      <div style={{ padding: 20 }}>
+        <KanbanBoard boardId={"jhfjhfjhcjg"} />
+      </div>
+    </Provider>
   );
 };
 
 export default App;
-

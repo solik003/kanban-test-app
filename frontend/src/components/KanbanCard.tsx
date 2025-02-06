@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -5,27 +6,32 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Draggable } from 'react-beautiful-dnd';
 import KanbanModal from './KanbanModal';
 import { KanbanCardProps } from '../types';
+import { useDispatch } from 'react-redux';
+import { deleteCard, updateCard } from '../redux/slices/kanbanSlice';
 
-
-
-const KanbanCard: React.FC<KanbanCardProps> = ({ listID, card, index, onDeleteCard, onUpdateCard }) => {
+const KanbanCard: React.FC<KanbanCardProps> = ({ listID, card, index }) => {
+    const dispatch = useDispatch();
     const [open, setOpen] = useState(false);
-    const [cardTitle, setCardTitle] = useState(card.title);
-    const [cardText, setCardText] = useState(card.text);
+    const [isAddingNew, setIsAddingNew] = useState(false);
 
-    const handleOpenModal = () => {
+    const handleOpenModal = (isNewCard: boolean) => {
+        setIsAddingNew(isNewCard);
         setOpen(true);
     };
 
-    const handleDeleteCard = () => {
-        onDeleteCard(listID, card.id);
+    const handleDeleteCard = (id: string) => {
+        dispatch(deleteCard(id));
     };
-
-    const handleUpdateCard = (updatedTitle: string, updatedText: string) => {
-        setCardTitle(updatedTitle);
-        setCardText(updatedText);
-        onUpdateCard(listID, card.id, updatedTitle, updatedText);
-        setOpen(false);
+    const handleUpdateCard = (updatedTitle: string, updatedDesc: string) => {
+        if (card.id && updatedTitle && updatedDesc) {
+            dispatch(updateCard({
+                listID,
+                cardID: card.id,
+                title: updatedTitle,
+                desc: updatedDesc,
+            }));
+            setOpen(false);
+        }
     };
 
     return (
@@ -36,10 +42,10 @@ const KanbanCard: React.FC<KanbanCardProps> = ({ listID, card, index, onDeleteCa
                         <Card style={{ marginBottom: 8, transition: 'all .4s' }}>
                             <CardContent>
                                 <Typography variant="h6" component="h4" gutterBottom>
-                                    {cardTitle}
+                                    {card.title}
                                 </Typography>
                                 <Typography variant="body2" component="p">
-                                    {cardText}
+                                    {card.desc}
                                 </Typography>
                             </CardContent>
 
@@ -48,7 +54,7 @@ const KanbanCard: React.FC<KanbanCardProps> = ({ listID, card, index, onDeleteCa
                                     color="primary"
                                     size="small"
                                     startIcon={<EditIcon />}
-                                    onMouseDown={handleOpenModal}
+                                    onMouseDown={() => handleOpenModal(false)}
                                 >
                                     Edit
                                 </Button>
@@ -57,7 +63,7 @@ const KanbanCard: React.FC<KanbanCardProps> = ({ listID, card, index, onDeleteCa
                                     color="secondary"
                                     size="small"
                                     startIcon={<DeleteIcon />}
-                                    onClick={handleDeleteCard}
+                                    onClick={() => handleDeleteCard(card.id)}
                                 >
                                     Delete
                                 </Button>
@@ -72,10 +78,9 @@ const KanbanCard: React.FC<KanbanCardProps> = ({ listID, card, index, onDeleteCa
                 cardID={card.id}
                 open={open}
                 setOpen={setOpen}
-                cardTitle={cardTitle}
-                cardDesc={cardText}
-                type="UPDATE_CARD"
-                onAddCard={() => { }}
+                cardTitle={isAddingNew ? '' : card.title}
+                cardDesc={isAddingNew ? '' : card.desc}
+                type={isAddingNew ? "ADD_CARD" : "UPDATE_CARD"}
                 onDeleteCard={handleDeleteCard}
                 onUpdateCard={handleUpdateCard}
             />

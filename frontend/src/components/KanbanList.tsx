@@ -1,42 +1,58 @@
-import React from 'react';
-import { Grid, Typography } from '@mui/material';
+
+import React, { useState } from 'react';
+import { Button, Stack, Typography } from '@mui/material';
 import { Droppable } from 'react-beautiful-dnd';
 
 import KanbanCard from './KanbanCard';
+import KanbanModal from './KanbanModal';
 import { KanbanListProps } from '../types';
-
+import { useDispatch } from 'react-redux';
+import { addCard } from '../redux/slices/kanbanSlice';
 
 const KanbanList: React.FC<KanbanListProps> = ({ listID, title, cards, onDeleteCard, onUpdateCard }) => {
+  const dispatch = useDispatch();
+  const [open, setOpen] = useState(false);
+  const [newTitle, setNewTitle] = useState('');
+  const [newDesc, setNewDesc] = useState('');
+
+
+  const handleOpenModal = () => {
+    setNewTitle('');
+    setNewDesc('');
+    setOpen(true);
+  };
+
+  const handleAddNewCard = (newTitle: string, newDesc: string) => {
+    if (newTitle && newDesc) {
+      dispatch(addCard({
+        listID: listID,
+        title: newTitle,
+        desc: newDesc
+      }));
+      setOpen(false);
+    }
+  };
+
+
   return (
-    <Grid
-      item
+    <Stack
       sx={{
-        position: 'relative',
         backgroundColor: '#ebecf0',
         borderRadius: 3,
         padding: 2,
         margin: 2,
-        flex: '0 0 auto',
         minWidth: 300,
-        display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'column',
       }}
     >
-      <Droppable droppableId={String(listID)} >
+      <Droppable droppableId={String(listID)}>
         {(provided) => (
-          <Grid item {...provided.droppableProps} ref={provided.innerRef}>
-            <Typography
-              sx={{
-                padding: '4px 8px',
-              }}
-              variant="h6"
-              component="h3"
-              gutterBottom
-            >
+          <Stack {...provided.droppableProps} ref={provided.innerRef}>
+            <Typography variant="h6" component="h3" gutterBottom>
               {title}
             </Typography>
 
-            <Grid item sx={{ display: 'flex', flexDirection: 'column', gap: 2, overflowX: 'auto', maxWidth: '100%' }}>
+            <Stack direction="column" spacing={2}>
               {cards.map((card, index) => (
                 <KanbanCard
                   key={card.id}
@@ -48,11 +64,33 @@ const KanbanList: React.FC<KanbanListProps> = ({ listID, title, cards, onDeleteC
                 />
               ))}
               {provided.placeholder}
-            </Grid>
-          </Grid>
+            </Stack>
+          </Stack>
         )}
       </Droppable>
-    </Grid>
+
+      <Button
+        variant="contained"
+        color="primary"
+        fullWidth
+        style={{ marginTop: 8 }}
+        onClick={handleOpenModal}
+      >
+        Add New Card
+      </Button>
+
+
+      <KanbanModal
+        listID={listID}
+        open={open}
+        setOpen={setOpen}
+        cardTitle={newTitle}
+        cardDesc={newDesc}
+        type="ADD_CARD"
+        onAddCard={handleAddNewCard}
+      />
+    </Stack>
   );
 };
+
 export default KanbanList;
