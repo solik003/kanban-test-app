@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { selectIsCreating, selectIsUpdating } from '../redux/selectors/cardSelectors';
 import { createCard, updateCard } from '../redux/slices/cardSlice';
 
-export const KanbanModal: React.FC<KanbanModalProps> = ({
+export const ListModal: React.FC<KanbanModalProps> = ({
     open,
     setOpen,
     card,

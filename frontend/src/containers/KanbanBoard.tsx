@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo } from 'react';
-import { KanbanList } from '../components/KanbanList';
+import { ListItem } from '../components/ListItem';
 import { KanbanBoardProps } from '../types';
 import { useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
@@ -76,7 +76,7 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = () => {
                             ))
                         ) : (
                             lists.map(list => (
-                                <KanbanList
+                                <ListItem
                                     key={list.id}
                                     list={list}
                                 />

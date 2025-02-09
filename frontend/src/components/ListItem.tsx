@@ -3,14 +3,14 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Button, Skeleton, Stack, Typography } from '@mui/material';
 import { Droppable } from 'react-beautiful-dnd';
 
-import { KanbanCard } from './KanbanCard';
-import { KanbanModal } from './KanbanModal';
+import { CardItem } from './CardItem';
+import { ListModal } from './ListModal';
 import { KanbanListProps } from '../types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { selectCardsForList, selectIsLoadingList } from '../redux/selectors/cardSelectors';
 import { loadCardsForList } from '../redux/slices/cardSlice';
 
-export const KanbanList: React.FC<KanbanListProps> = ({ list }) => {
+export const ListItem: React.FC<KanbanListProps> = ({ list }) => {
   const [open, setOpen] = useState(false);
 
   const dispatch = useAppDispatch();
@@ -65,7 +65,7 @@ export const KanbanList: React.FC<KanbanListProps> = ({ list }) => {
                 ))
               ) : (
                 cards.map((card, index) => (
-                  <KanbanCard
+                  <CardItem
                     key={card.id}
                     card={card}
                     index={index}
@@ -86,7 +86,7 @@ export const KanbanList: React.FC<KanbanListProps> = ({ list }) => {
               Add New Card
             </Button>
 
-            <KanbanModal
+            <ListModal
               open={open}
               listId={list.id}
               setOpen={setOpen}
