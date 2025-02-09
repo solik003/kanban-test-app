@@ -1,46 +1,33 @@
-import { Card } from "../models/Card";
+import { Types } from "mongoose";
+import { Card, ICard } from "../models/Card";
 
 export const createCard = async (title: string, description: string, listId: string) => {
-    try {
-        const card = new Card({ title, description, listId });
-        return await card.save();
-    } catch (error) {
-        throw new Error("Failed to create card");
-    }
+    const card = new Card({ title, description, listId });
+    return await card.save();
 };
 
 export const getCardById = async (id: string) => {
-    try {
-        return await Card.findById(id);
-    } catch (err) {
-        throw new Error("Error fetching cards by listId");
+    if (!Types.ObjectId.isValid(id)) {
+        throw new Error('Invalid card id')
     }
+    return await Card.findById(id);
 };
 
 export const findCards = async (filters: { listId?: string }, limit = 25, skip = 0) => {
-    try {
-        return await Card.find(filters).limit(limit).skip(skip);
-    } catch (error) {
-        throw new Error("Failed to fetch lists");
-    }
+    return await Card.find(filters).limit(limit).skip(skip);
 };
 
-export const updateCard = async (id: string, title: string, description: string) => {
-    try {
-        return await Card.findByIdAndUpdate(
-            id,
-            { title, description },
-            { new: true }
-        );
-    } catch (error) {
-        throw new Error("Failed to update card");
+export const updateCard = async (id: string, card: Partial<ICard>) => {
+    if (!Types.ObjectId.isValid(id)) {
+        throw new Error('Invalid card id')
     }
+    return await Card.findByIdAndUpdate(
+        id,
+        card,
+        { new: true }
+    );
 };
 
 export const deleteCard = async (id: string) => {
-    try {
-        return await Card.findByIdAndDelete(id);
-    } catch (error) {
-        throw new Error("Failed to delete card");
-    }
+    return await Card.findByIdAndDelete(id);
 };

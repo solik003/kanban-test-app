@@ -12,7 +12,7 @@ export const createList = async (req: Request, res: Response) => {
         const list = await listService.createList(title, boardId);
         res.status(201).json(list);
     } catch (error) {
-        res.status(500).json({ error: "Error creating list" });
+        res.status(500).json({ error: "Failed to create list" });
     }
 };
 
@@ -29,7 +29,7 @@ export const getLists = async (req: Request, res: Response) => {
         const lists = await listService.findLists(filter);
         res.status(200).json(lists);
     } catch (error) {
-        res.status(500).json({ error: "Error fetching lists" });
+        res.status(500).json({ error: "Failed to fetch lists" });
     }
 };
 
@@ -43,7 +43,7 @@ export const getListById = async (req: Request, res: Response) => {
 
         res.status(200).json(list);
     } catch (error) {
-        res.status(500).json({ error: "Error fetching list" });
+        res.status(500).json({ error: "Failed to fetch list by id" });
     }
 };
 
@@ -58,7 +58,7 @@ export const updateList = async (req: Request, res: Response) => {
 
         res.status(200).json(updatedList);
     } catch (error) {
-        res.status(500).json({ error: "Error updating list" });
+        res.status(500).json({ error: "Failed to update list" });
     }
 };
 
@@ -72,6 +72,6 @@ export const deleteList = async (req: Request, res: Response) => {
 
         res.status(200).json({ message: "List deleted successfully" });
     } catch (error) {
-        res.status(500).json({ error: "Error deleting list" });
+        res.status(500).json({ error: "Failed to delete list" });
     }
 };

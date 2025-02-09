@@ -1,18 +1,19 @@
 import mongoose, { Schema, Document } from "mongoose";
 import { ICard } from "./Card";
-import { IBoard } from "./Board";
 
 export interface IList extends Document {
     title: string;
     boardId: mongoose.Types.ObjectId;
     cards: ICard[];
     cardsCount: number;
+    canCreateCard: boolean
 }
 
 const ListSchema: Schema = new Schema(
     {
         title: { type: String, required: true },
         boardId: { type: mongoose.Types.ObjectId, ref: 'Board', required: true },
+        canCreateCard: { type: Boolean, default: false }
     },
     { timestamps: true }
 );

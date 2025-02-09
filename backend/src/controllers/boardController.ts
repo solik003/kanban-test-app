@@ -8,7 +8,7 @@ export const createBoard = async (req: Request, res: Response) => {
         const board = await boardService.createBoard(name);
         res.status(201).json(board);
     } catch (err: any) {
-        res.status(500).json({ error: err.message || "Error creating board" });
+        res.status(500).json({ error: err.message || "Failed to create board" });
     }
 };
 
@@ -17,7 +17,7 @@ export const getBoards = async (req: Request, res: Response) => {
         const boards = await boardService.getBoards();
         res.status(200).json(boards);
     } catch (err) {
-        res.status(500).json({ error: "Error fetching boards" });
+        res.status(500).json({ error: "Failed to fetch boards" });
     }
 };
 
@@ -35,7 +35,7 @@ export const getBoardById = async (req: Request, res: Response) => {
         }
         res.status(200).json(board);
     } catch (err) {
-        res.status(500).json({ error: "Error fetching board" });
+        res.status(500).json({ error: "Failed to fetch board by id" });
     }
 };
 
@@ -54,7 +54,7 @@ export const updateBoard = async (req: Request, res: Response) => {
         }
         res.status(200).json(updatedBoard);
     } catch (err) {
-        res.status(500).json({ error: "Error updating board" });
+        res.status(500).json({ error: "Failed to update board" });
     }
 };
 
@@ -72,7 +72,7 @@ export const deleteBoard = async (req: Request, res: Response) => {
         }
         res.status(200).json({ message: "Board deleted successfully" });
     } catch (err) {
-        res.status(500).json({ error: "Error deleting board" });
+        res.status(500).json({ error: "Failed to delete board" });
     }
 };
 
