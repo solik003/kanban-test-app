@@ -1,11 +1,16 @@
 import { configureStore } from '@reduxjs/toolkit';
-import kanbanReducer from '../slices/kanbanSlice'
-
+import boardReducer from '../slices/boardSlice'
+import cardReducer from '../slices/cardSlice'
+import listReducer from '../slices/listSlice'
 
 export const store = configureStore({
     reducer: {
-        kanban: kanbanReducer
+        boards: boardReducer,
+        cards: cardReducer,
+        lists: listReducer
     }
 });
 
 export type RootState = ReturnType<typeof store.getState>;
+
+export type AppDispatch = typeof store.dispatch;

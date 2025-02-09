@@ -1,65 +1,68 @@
 
 import React, { useState } from 'react';
-import { Button, Card, CardActions, CardContent, Grid, Typography } from '@mui/material';
+import { Button, Card, CardActions, CardContent, Skeleton, Stack, Typography } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Draggable } from 'react-beautiful-dnd';
-import KanbanModal from './KanbanModal';
+import { KanbanModal } from './KanbanModal';
 import { KanbanCardProps } from '../types';
-import { useDispatch } from 'react-redux';
-import { deleteCard, updateCard } from '../redux/slices/kanbanSlice';
+import { selectIsDeleting, selectIsMoving } from '../redux/selectors/cardSelectors';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { deleteCard } from '../redux/slices/cardSlice';
 
-const KanbanCard: React.FC<KanbanCardProps> = ({ listID, card, index }) => {
-    const dispatch = useDispatch();
+export const KanbanCard: React.FC<KanbanCardProps> = ({ card, index }) => {
+    const dispatch = useAppDispatch();
     const [open, setOpen] = useState(false);
-    const [isAddingNew, setIsAddingNew] = useState(false);
 
-    const handleOpenModal = (isNewCard: boolean) => {
-        setIsAddingNew(isNewCard);
+    const handleOpenModal = () => {
         setOpen(true);
     };
 
     const handleDeleteCard = (id: string) => {
         dispatch(deleteCard(id));
     };
-    const handleUpdateCard = (updatedTitle: string, updatedDesc: string) => {
-        if (card.id && updatedTitle && updatedDesc) {
-            dispatch(updateCard({
-                listID,
-                cardID: card.id,
-                title: updatedTitle,
-                desc: updatedDesc,
-            }));
-            setOpen(false);
-        }
-    };
+
+    const isDeleting = useAppSelector(selectIsDeleting(card.id));
+    const isMoving = useAppSelector(selectIsMoving(card.id));
 
     return (
-        <Grid item>
-            <Draggable draggableId={String(card.id)} index={index}>
+        <Stack>
+            <Draggable draggableId={card.id} index={index}>
                 {(provided) => (
-                    <Grid ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
-                        <Card style={{ marginBottom: 8, transition: 'all .4s' }}>
-                            <CardContent>
-                                <Typography variant="h6" component="h4" gutterBottom>
-                                    {card.title}
-                                </Typography>
-                                <Typography variant="body2" component="p">
-                                    {card.desc}
-                                </Typography>
-                            </CardContent>
+                    <Stack ref={provided.innerRef} {...provided.draggableProps} {...provided.dragHandleProps}>
+                        <Card sx={{
+                            maxWidth: '300px',
+                            marginBottom: 1,
+                            transition: 'all .4s'
+                        }}>
+                            {isMoving ? (
+                                <CardContent>
+                                    <Skeleton variant="text" width="80%" height={30} />
+                                    <Skeleton variant="text" width="90%" height={20} />
+                                </CardContent>
+                            ) : (
+                                <CardContent>
+                                    <Typography noWrap variant="h6" component="h4" gutterBottom>
+                                        {card.title}
+                                    </Typography>
+                                    <Typography noWrap variant="body2" component="p">
+                                        {card.description}
+                                    </Typography>
+                                </CardContent>
+                            )}
 
-                            <CardActions style={{ display: 'flex', justifyContent: 'space-between' }}>
+                            <CardActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
                                 <Button
                                     color="primary"
                                     size="small"
                                     startIcon={<EditIcon />}
-                                    onMouseDown={() => handleOpenModal(false)}
+                                    onMouseDown={() => handleOpenModal()}
                                 >
                                     Edit
                                 </Button>
 
                                 <Button
+                                    loading={isDeleting}
                                     color="secondary"
                                     size="small"
                                     startIcon={<DeleteIcon />}
@@ -69,23 +72,16 @@ const KanbanCard: React.FC<KanbanCardProps> = ({ listID, card, index }) => {
                                 </Button>
                             </CardActions>
                         </Card>
-                    </Grid>
+                    </Stack>
                 )}
             </Draggable>
 
             <KanbanModal
-                listID={listID}
-                cardID={card.id}
                 open={open}
                 setOpen={setOpen}
-                cardTitle={isAddingNew ? '' : card.title}
-                cardDesc={isAddingNew ? '' : card.desc}
-                type={isAddingNew ? "ADD_CARD" : "UPDATE_CARD"}
-                onDeleteCard={handleDeleteCard}
-                onUpdateCard={handleUpdateCard}
+                card={card}
+                listId={card.listId}
             />
-        </Grid>
+        </Stack>
     );
 };
-
-export default KanbanCard;

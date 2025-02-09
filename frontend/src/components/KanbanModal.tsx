@@ -1,45 +1,64 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
-import { KanbanModalProps } from '../types';
+import { Card, KanbanModalProps } from '../types';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { selectIsCreating, selectIsUpdating } from '../redux/selectors/cardSelectors';
+import { createCard, updateCard } from '../redux/slices/cardSlice';
 
-const KanbanModal: React.FC<KanbanModalProps> = ({
+export const KanbanModal: React.FC<KanbanModalProps> = ({
     open,
     setOpen,
-    cardTitle,
-    cardDesc,
-    onUpdateCard,
-    onAddCard,
-    type,
+    card,
+    listId
 }) => {
-    const { control, handleSubmit, setValue } = useForm({
-        defaultValues: {
-            title: cardTitle,
-            desc: cardDesc,
-        },
-    });
+    const isCreating = useAppSelector(selectIsCreating);
+    const isUpdating = useAppSelector(selectIsUpdating);
 
-    useEffect(() => {
-        setValue('title', cardTitle);
-        setValue('desc', cardDesc);
-    }, [cardTitle, cardDesc, setValue]);
+    const dispatch = useAppDispatch();
 
-    const onSubmit = (data: { title: string; desc: string }) => {
-        if (type === 'ADD_CARD' && onAddCard) {
-            onAddCard(data.title, data.desc);
-            setOpen(false);
-        } else {
-            onUpdateCard(data.title, data.desc);
-            setOpen(false);
-        }
+    const handleCreate = async (newCard: Partial<Card>): Promise<Card> => {
+        return dispatch(createCard(newCard)).unwrap();
     };
 
+    const handleUpdate = async (updatedCard: Partial<Card>): Promise<Card> => {
+        if (card) {
+            return dispatch(updateCard({ id: card.id, updatedCard })).unwrap()
+        }
+        return Promise.reject()
+    };
+
+    const { control, handleSubmit, reset } = useForm({
+        defaultValues: { ...card || { listId } },
+    });
+
+    const onFormSubmit = (data: Partial<Card>) => {
+        const promise = card ? handleUpdate({
+            title: data.title,
+            description: data.description
+        }) : handleCreate({
+            title: data.title,
+            description: data.description,
+            listId
+        });
+
+        promise.then(() => {
+            setOpen(false);
+            reset();
+        })
+    };
+
+    const onCancel = () => {
+        setOpen(false);
+        reset();
+    }
+
     return (
-        <Dialog open={open} onClose={() => setOpen(false)}>
-            <DialogTitle>{type === 'ADD_CARD' ? 'Add New Card' : 'Edit Card'}</DialogTitle>
+        <Dialog open={open} onClose={() => onCancel()}>
+            <DialogTitle>{card ? 'Edit Card' : 'Add New Card'}</DialogTitle>
             <DialogContent>
-                <form onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onFormSubmit)}>
                     <Controller
                         name="title"
                         control={control}
@@ -55,7 +74,7 @@ const KanbanModal: React.FC<KanbanModalProps> = ({
                         )}
                     />
                     <Controller
-                        name="desc"
+                        name="description"
                         control={control}
                         render={({ field }) => (
                             <TextField
@@ -68,11 +87,11 @@ const KanbanModal: React.FC<KanbanModalProps> = ({
                         )}
                     />
                     <DialogActions>
-                        <Button onClick={() => setOpen(false)} color="primary">
+                        <Button onClick={() => onCancel()} color="primary">
                             Cancel
                         </Button>
-                        <Button type="submit" color="primary">
-                            {type === 'ADD_CARD' ? 'Add' : 'Save'}
+                        <Button loading={isUpdating || isCreating} type="submit" color="primary">
+                            {card ? 'Save' : 'Add'}
                         </Button>
                     </DialogActions>
                 </form>
@@ -80,5 +99,3 @@ const KanbanModal: React.FC<KanbanModalProps> = ({
         </Dialog>
     );
 };
-
-export default KanbanModal;

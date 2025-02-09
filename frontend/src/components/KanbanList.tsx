@@ -1,96 +1,100 @@
 
-import React, { useState } from 'react';
-import { Button, Stack, Typography } from '@mui/material';
+import React, { useEffect, useMemo, useState } from 'react';
+import { Button, Skeleton, Stack, Typography } from '@mui/material';
 import { Droppable } from 'react-beautiful-dnd';
 
-import KanbanCard from './KanbanCard';
-import KanbanModal from './KanbanModal';
+import { KanbanCard } from './KanbanCard';
+import { KanbanModal } from './KanbanModal';
 import { KanbanListProps } from '../types';
-import { useDispatch } from 'react-redux';
-import { addCard } from '../redux/slices/kanbanSlice';
+import { useAppDispatch, useAppSelector } from '../redux/hooks';
+import { selectCardsForList, selectIsLoadingList } from '../redux/selectors/cardSelectors';
+import { loadCardsForList } from '../redux/slices/cardSlice';
 
-const KanbanList: React.FC<KanbanListProps> = ({ listID, title, cards, onDeleteCard, onUpdateCard }) => {
-  const dispatch = useDispatch();
+export const KanbanList: React.FC<KanbanListProps> = ({ list }) => {
   const [open, setOpen] = useState(false);
-  const [newTitle, setNewTitle] = useState('');
-  const [newDesc, setNewDesc] = useState('');
 
+  const dispatch = useAppDispatch();
+  const cards = useAppSelector(selectCardsForList(list.id));
+  const isLoading = useAppSelector(selectIsLoadingList(list.id));
+
+  const skeletonCards = useMemo(() => {
+    return [...Array(list.cardsCount)];
+  }, [list.cardsCount])
+
+  useEffect(() => {
+    dispatch(loadCardsForList(list.id));
+  }, [dispatch, list.id]);
 
   const handleOpenModal = () => {
-    setNewTitle('');
-    setNewDesc('');
     setOpen(true);
   };
 
-  const handleAddNewCard = (newTitle: string, newDesc: string) => {
-    if (newTitle && newDesc) {
-      dispatch(addCard({
-        listID: listID,
-        title: newTitle,
-        desc: newDesc
-      }));
-      setOpen(false);
-    }
-  };
-
-
   return (
-    <Stack
-      sx={{
-        backgroundColor: '#ebecf0',
-        borderRadius: 3,
-        padding: 2,
-        margin: 2,
-        minWidth: 300,
-        flexDirection: 'column',
-      }}
-    >
-      <Droppable droppableId={String(listID)}>
-        {(provided) => (
-          <Stack {...provided.droppableProps} ref={provided.innerRef}>
+    <Droppable droppableId={String(list.id)}>
+      {(provided) => (
+        <Stack
+          ref={provided.innerRef}
+          {...provided.droppableProps}
+          sx={{
+            backgroundColor: '#ebecf0',
+            borderRadius: 3,
+            padding: 2,
+            margin: 2,
+            minWidth: 300,
+            flexDirection: 'column',
+            height: '100vh'
+          }}
+        >
+          <Stack>
             <Typography variant="h6" component="h3" gutterBottom>
-              {title}
+              {list.title}
             </Typography>
-
             <Stack direction="column" spacing={2}>
-              {cards.map((card, index) => (
-                <KanbanCard
-                  key={card.id}
-                  card={card}
-                  listID={listID}
-                  index={index}
-                  onDeleteCard={onDeleteCard}
-                  onUpdateCard={onUpdateCard}
-                />
-              ))}
+              {isLoading && list.cardsCount > 0 && cards.length === 0 ? (
+                skeletonCards.map((_, i) => (
+                  <Skeleton
+                    key={i}
+                    variant="rectangular"
+                    width="100%"
+                    height={140}
+                    sx={{
+                      my: 1,
+                      borderRadius: 1
+                    }}
+                  />
+                ))
+              ) : (
+                cards.map((card, index) => (
+                  <KanbanCard
+                    key={card.id}
+                    card={card}
+                    index={index}
+                  />
+                ))
+              )}
               {provided.placeholder}
             </Stack>
           </Stack>
-        )}
-      </Droppable>
+          {list.canCreateCard && <>
+            <Button
+              variant="contained"
+              color="primary"
+              fullWidth
+              sx={{ marginTop: 1 }}
+              onClick={handleOpenModal}
+            >
+              Add New Card
+            </Button>
 
-      <Button
-        variant="contained"
-        color="primary"
-        fullWidth
-        style={{ marginTop: 8 }}
-        onClick={handleOpenModal}
-      >
-        Add New Card
-      </Button>
+            <KanbanModal
+              open={open}
+              listId={list.id}
+              setOpen={setOpen}
+            />
+          </>}
 
-
-      <KanbanModal
-        listID={listID}
-        open={open}
-        setOpen={setOpen}
-        cardTitle={newTitle}
-        cardDesc={newDesc}
-        type="ADD_CARD"
-        onAddCard={handleAddNewCard}
-      />
-    </Stack>
+        </Stack>
+      )}
+    </Droppable>
   );
 };
-
-export default KanbanList;
