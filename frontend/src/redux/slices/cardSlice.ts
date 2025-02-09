@@ -167,6 +167,7 @@ const cardsSlice = createSlice({
             })
             .addCase(deleteCard.rejected, (state, action) => {
                 delete state.deleteLoading[action.meta.arg];
+                state.error = action.error.message ?? "Failed to delete card";
             });
     },
 });

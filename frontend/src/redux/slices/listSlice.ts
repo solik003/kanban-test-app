@@ -109,6 +109,7 @@ const listsSlice = createSlice({
             })
             .addCase(deleteList.rejected, (state, action) => {
                 delete state.deleteLoading[action.meta.arg];
+                state.error = action.error.message ?? "Failed to delete list";
             });
     },
 });
