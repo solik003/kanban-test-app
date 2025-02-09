@@ -22,40 +22,19 @@ export interface Board {
     listsCount: number;
 }
 
-export interface KanbanListProps {
+export interface ListItemProps {
     list: List;
 }
 
-export interface ModalProps {
-    open: boolean;
-    setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-    cardTitle?: string;
-    cardDesc?: string;
-    type: string;
-    listId: string;
-    cardId?: string;
-    onAddCard: (listId: string, title: string, text: string) => void;
-    onDeleteCard: (listId: string, cardId: string) => void;
-    onUpdateCard: (listId: string, cardId: string, title: string, text: string) => void;
-}
-export interface KanbanCardProps {
+
+export interface CardItemProps {
     card: Card;
     index: number;
 }
 
-
 export interface KanbanBoardProps {
     // id: string;
 }
-
-
-export interface KanbanModalProps {
-    open: boolean;
-    setOpen: (open: boolean) => void;
-    card?: Card,
-    listId: string;
-}
-
 
 export interface BoardItemProps {
     board: Board;
@@ -63,12 +42,6 @@ export interface BoardItemProps {
 
 export interface BoardTableProps {
     boards: Board[];
-}
-
-export interface CreateUpdateBoardModalProps {
-    open: boolean;
-    board: Board | null;
-    setOpen: (open: boolean) => void;
 }
 
 export interface BoardsState {

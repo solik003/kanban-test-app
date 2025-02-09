@@ -1,10 +1,11 @@
 
 import { Dialog, DialogTitle, DialogContent, TextField, DialogActions, Button } from "@mui/material";
-import { Board, CreateUpdateBoardModalProps } from "../types";
+import { Board} from "../types";
 import { Controller, useForm } from "react-hook-form";
 import { useAppDispatch, useAppSelector } from "../redux/hooks";
 import { createBoard, updateBoard } from "../redux/slices/boardSlice";
 import { selectIsCreatingBoard, selectIsUpdatingBoard } from "../redux/selectors/boardSelectors";
+import { CreateUpdateBoardModalProps } from "../types/modals";
 
 
 export const CreateUpdateBoardModal: React.FC<CreateUpdateBoardModalProps> = ({

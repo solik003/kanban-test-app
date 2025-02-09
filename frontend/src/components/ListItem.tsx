@@ -5,12 +5,12 @@ import { Droppable } from 'react-beautiful-dnd';
 
 import { CardItem } from './CardItem';
 import { ListModal } from './ListModal';
-import { KanbanListProps } from '../types';
+import { ListItemProps } from '../types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { selectCardsForList, selectIsLoadingList } from '../redux/selectors/cardSelectors';
 import { loadCardsForList } from '../redux/slices/cardSlice';
 
-export const ListItem: React.FC<KanbanListProps> = ({ list }) => {
+export const ListItem: React.FC<ListItemProps> = ({ list }) => {
   const [open, setOpen] = useState(false);
 
   const dispatch = useAppDispatch();

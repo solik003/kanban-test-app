@@ -2,12 +2,13 @@
 import React from 'react';
 import { Dialog, DialogActions, DialogContent, DialogTitle, TextField, Button } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
-import { Card, KanbanModalProps } from '../types';
+import { Card} from '../types';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { selectIsCreating, selectIsUpdating } from '../redux/selectors/cardSelectors';
 import { createCard, updateCard } from '../redux/slices/cardSlice';
+import { ListModalProps } from '../types/modals';
 
-export const ListModal: React.FC<KanbanModalProps> = ({
+export const ListModal: React.FC<ListModalProps> = ({
     open,
     setOpen,
     card,

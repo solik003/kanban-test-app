@@ -5,12 +5,12 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import { Draggable } from 'react-beautiful-dnd';
 import { ListModal } from './ListModal';
-import { KanbanCardProps } from '../types';
+import { CardItemProps } from '../types';
 import { selectIsDeleting, selectIsMoving } from '../redux/selectors/cardSelectors';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { deleteCard } from '../redux/slices/cardSlice';
 
-export const CardItem: React.FC<KanbanCardProps> = ({ card, index }) => {
+export const CardItem: React.FC<CardItemProps> = ({ card, index }) => {
     const dispatch = useAppDispatch();
     const [open, setOpen] = useState(false);
 
