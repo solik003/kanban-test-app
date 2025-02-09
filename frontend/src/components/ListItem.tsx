@@ -42,7 +42,8 @@ export const ListItem: React.FC<KanbanListProps> = ({ list }) => {
             margin: 2,
             minWidth: 300,
             flexDirection: 'column',
-            height: '100vh'
+            maxHeight: '80vh',
+            overflowY: 'auto'
           }}
         >
           <Stack>
