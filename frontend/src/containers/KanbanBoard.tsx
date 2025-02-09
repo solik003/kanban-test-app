@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { selectBoardById, selectBoardsError, selectIsLoadingBoards } from '../redux/selectors/boardSelectors';
 import { fetchBoardById } from '../redux/slices/boardSlice';
 import { selectIsLoadingLists, selectListsForBoard } from '../redux/selectors/listSelectors';
-import { Skeleton, Stack, Typography } from '@mui/material';
+import { CircularProgress, Skeleton, Stack, Typography } from '@mui/material';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { loadListsForBoard } from '../redux/slices/listSlice';
 import { moveCard } from '../redux/slices/cardSlice';
@@ -50,7 +50,11 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = () => {
 
     return (
         <Stack direction="column">
-            {isLoadingBoard && <Typography variant="h6">Loading...</Typography>}
+            {isLoadingBoard && (
+                <Stack direction="row" justifyContent="center" alignItems="center" spacing={2}>
+                    <CircularProgress />
+                </Stack>
+            )}
             {error && <Typography variant="h6" color="error">{error}</Typography>}
 
             <Typography variant="h3" component="h1">
