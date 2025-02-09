@@ -2,58 +2,105 @@
 export interface Card {
     id: string;
     title: string;
-    desc: string;
+    description: string;
+    listId: string;
+    oldListId?: string;
 }
+
 export interface List {
     id: string;
     title: string;
     cards: Card[];
+    boardId: string;
+    cardsCount: number;
+    canCreateCard: boolean;
 }
+
+export interface Board {
+    id: string;
+    name: string;
+    listsCount: number;
+}
+
 export interface KanbanListProps {
-    listID: string;
-    title: string;
-    cards: Card[];
-    onDeleteCard: (listID: string, cardID: string) => void;
-    onUpdateCard: (listID: string, cardID: string, title: string, text: string) => void;
+    list: List;
 }
+
 export interface ModalProps {
     open: boolean;
     setOpen: React.Dispatch<React.SetStateAction<boolean>>;
     cardTitle?: string;
     cardDesc?: string;
     type: string;
-    listID: string;
-    cardID?: string;
-    onAddCard: (listID: string, title: string, text: string) => void;
-    onDeleteCard: (listID: string, cardID: string) => void;
-    onUpdateCard: (listID: string, cardID: string, title: string, text: string) => void;
+    listId: string;
+    cardId?: string;
+    onAddCard: (listId: string, title: string, text: string) => void;
+    onDeleteCard: (listId: string, cardId: string) => void;
+    onUpdateCard: (listId: string, cardId: string, title: string, text: string) => void;
 }
 export interface KanbanCardProps {
-    listID: string;
     card: Card;
     index: number;
-    onDeleteCard: (listID: string, cardID: string) => void;
-    onUpdateCard: (listID: string, cardID: string, title: string, text: string) => void;
 }
 
 
 export interface KanbanBoardProps {
-    boardId: string;
+    // id: string;
 }
 
-export interface KanbanState {
-    lists: List[];
-}
 
 export interface KanbanModalProps {
     open: boolean;
     setOpen: (open: boolean) => void;
-    cardTitle: string;
-    cardDesc: string;
-    onUpdateCard: (updatedTitle: string, updatedDesc: string) => void;
-    onAddCard?: (newTitle: string, newDesc: string) => void;
-    onDeleteCard: (cardID: string) => void;
-    listID: string;
-    cardID: string;
-    type: string;
+    card?: Card,
+    listId: string;
 }
+
+
+export interface BoardItemProps {
+    board: Board;
+}
+
+export interface BoardTableProps {
+    boards: Board[];
+}
+
+export interface CreateUpdateBoardModalProps {
+    open: boolean;
+    board: Board | null;
+    setOpen: (open: boolean) => void;
+}
+
+export interface BoardsState {
+    items: Record<string, Board>;
+    loading: boolean;
+    error: string | null;
+    deleteLoading: Record<string, boolean>;
+    updateLoading: boolean;
+    createLoading: boolean
+}
+
+export interface ListProps {
+    list: { id: string; name: string };
+}
+
+export interface ListsState {
+    items: Record<string, List>;
+    loading: boolean;
+    error: string | null;
+    createLoading: boolean;
+    updateLoading: boolean;
+    deleteLoading: Record<string, boolean>;
+}
+
+export interface CardsState {
+    items: Record<string, Card>;
+    loading: boolean;
+    error: string | null;
+    createLoading: boolean;
+    updateLoading: boolean;
+    deleteLoading: Record<string, boolean>;
+    loadingLists: Record<string, boolean>;
+    pendingMoves: Record<string, boolean>;
+}
+
