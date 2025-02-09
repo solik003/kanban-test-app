@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect, useMemo } from "react";
-import { Button, Typography } from "@mui/material";
+import { Button, CircularProgress, Stack, Typography } from "@mui/material";
 import { Snackbar, Alert } from "@mui/material";
 import { BoardTable } from "../components/BoardTable";
 import { fetchBoards } from '../redux/slices/boardSlice';
@@ -23,10 +23,15 @@ export const BoardList: React.FC = () => {
         Board List
       </Typography>
 
-      {loading && <Typography variant="h6">Loading...</Typography>}
+      {loading ? (
+        <Stack justifyContent="center" alignItems="center" my={3}>
+          <CircularProgress size={50} />
+        </Stack>
+      ) : (
+        <BoardTable boards={boards} />
+      )}
       {error && <Typography variant="h6" color="error">{error}</Typography>}
 
-      <BoardTable boards={boards} />
 
       <Button variant="contained" color="primary" sx={{ marginTop: 2 }} onClick={() => setOpenModal(true)}>
         Add New Board
