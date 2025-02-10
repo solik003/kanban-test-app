@@ -16,7 +16,6 @@ import { defineConfig, loadEnv } from 'vite'
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
-  console.log(env.REACT_APP_API_URL);
   return {
     base: '/kanban-test-app/',
     build: {
