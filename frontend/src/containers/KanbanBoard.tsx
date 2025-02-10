@@ -1,12 +1,12 @@
 import React, { useEffect, useMemo } from 'react';
 import { ListItem } from '../components/ListItem';
 import { KanbanBoardProps } from '../types';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../redux/hooks';
 import { selectBoardById, selectBoardsError, selectIsLoadingBoards } from '../redux/selectors/boardSelectors';
 import { fetchBoardById } from '../redux/slices/boardSlice';
 import { selectIsLoadingLists, selectListsForBoard } from '../redux/selectors/listSelectors';
-import { CircularProgress, Skeleton, Stack, Typography } from '@mui/material';
+import { Button, CircularProgress, Skeleton, Stack, Typography } from '@mui/material';
 import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { loadListsForBoard } from '../redux/slices/listSlice';
 import { moveCard } from '../redux/slices/cardSlice';
@@ -14,6 +14,7 @@ import { moveCard } from '../redux/slices/cardSlice';
 export const KanbanBoard: React.FC<KanbanBoardProps> = () => {
     const { id: boardId } = useParams();
     const dispatch = useAppDispatch();
+    const navigate = useNavigate();
     const board = useAppSelector(selectBoardById(boardId));
     const lists = useAppSelector(selectListsForBoard(boardId));
     const isLoadingBoard = useAppSelector(selectIsLoadingBoards);
@@ -89,6 +90,14 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = () => {
                     }
                 </DragDropContext>
             </Stack>
+            <Button
+                variant="contained"
+                color="primary"
+                onClick={() => navigate('/')}
+                sx={{ alignSelf: 'flex-start', marginBottom: 2 }}
+            >
+                Back
+            </Button>
         </Stack>
     );
 };
