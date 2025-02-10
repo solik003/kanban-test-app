@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "target": "esnext",
-    "module": "esnext",  // or "ES2020", "ES2022", etc.
+    "module": "esnext", // or "ES2020", "ES2022", etc.
     "moduleResolution": "node",
-    "jsx": "react-jsx",  // or "react"
+    "jsx": "react-jsx", // or "react"
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "skipLibCheck": true,
     "strict": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true
   }
 }
