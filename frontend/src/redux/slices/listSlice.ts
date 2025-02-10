@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { List, ListsState } from "../../types";
+import { API_BASE_URL } from "../../constants";
 
-const API_BASE_URL = import.meta?.env?.REACT_APP_API_URL || "http://localhost:3000/api";
 
 const initialState: ListsState = {
     items: {},

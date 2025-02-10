@@ -24,6 +24,7 @@
     "@types/mongoose": "^5.11.97",
     "@types/node": "^22.13.1",
     "ts-node": "^10.9.2",
-    "typescript": "^5.7.3"
+    "typescript": "^5.7.3",
+    "vercel": "^41.0.2"
   }
 }
