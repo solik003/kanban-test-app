@@ -36,7 +36,7 @@ Follow the steps below to set up the backend:
     DATABASE_URL=mongodb://localhost:27017/your-database
     JWT_SECRET=your-jwt-secret
 4. Start the backend application:
-    npm start
+    npm run dev
 
 The backend API will be available at http://localhost:3000.
 
