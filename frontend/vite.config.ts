@@ -18,6 +18,10 @@ export default defineConfig(({ mode }) => {
 
   console.log(env.REACT_APP_API_URL);
   return {
+    base: '/kanban-test-app/',
+    build: {
+      outDir: 'build'
+    },
     plugins: [react()],
     server: {
       host: true
