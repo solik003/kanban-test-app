@@ -20,7 +20,7 @@ export default defineConfig(({ mode }) => {
   return {
     base: '/kanban-test-app/',
     build: {
-      outDir: 'dist'
+      outDir: 'build'
     },
     plugins: [react()],
     server: {
