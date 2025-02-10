@@ -58,11 +58,11 @@ export const KanbanBoard: React.FC<KanbanBoardProps> = () => {
             )}
             {error && <Typography variant="h6" color="error">{error}</Typography>}
 
-            <Typography variant="h3" component="h1">
+            <Typography variant="h3" component="h1" sx={{ fontSize: { xs: '24px', sm: '32px', md: '36px' }, textAlign: 'center' }}>
                 {board?.name}
             </Typography>
 
-            <Stack direction="row">
+            <Stack direction={{ xs: 'column', sm: 'row' }}>
                 <DragDropContext onDragEnd={handleDragEnd}>
                     {
                         isLoadingLists && board?.listsCount && lists?.length === 0 ? (

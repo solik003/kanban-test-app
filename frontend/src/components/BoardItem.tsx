@@ -8,7 +8,6 @@ import { CreateUpdateBoardModal } from "./CreateUpdateBoardModal";
 import { selectIsDeletingBoard } from "../redux/selectors/boardSelectors";
 
 
-
 export const BoardItem: React.FC<BoardItemProps> = ({
     board
 }) => {
@@ -30,8 +29,8 @@ export const BoardItem: React.FC<BoardItemProps> = ({
     };
 
     return <TableRow key={board.id}>
-        <TableCell>{board.name}</TableCell>
-        <TableCell align="center">
+        <TableCell sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>{board.name}</TableCell>
+        <TableCell align="center" sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, gap: 1 }}>
             <Link to={`/boards/${board.id}`}>
                 <Button variant="outlined" onClick={() => handleViewBoard()}>
                     View Board

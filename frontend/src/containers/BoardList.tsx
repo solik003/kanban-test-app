@@ -19,7 +19,7 @@ export const BoardList: React.FC = () => {
 
   return (
     <div>
-      <Typography variant="h4" gutterBottom>
+      <Typography variant="h4" gutterBottom sx={{ fontSize:{xs: '1.5rem', sm: '2rem', md: '2.25rem'}}}>
         Board List
       </Typography>
 
@@ -33,7 +33,7 @@ export const BoardList: React.FC = () => {
       {error && <Typography variant="h6" color="error">{error}</Typography>}
 
 
-      <Button variant="contained" color="primary" sx={{ marginTop: 2 }} onClick={() => setOpenModal(true)}>
+      <Button variant="contained" color="primary" sx={{ marginTop: 2, width: { xs: "100%", sm: "auto" } }} onClick={() => setOpenModal(true)}>
         Add New Board
       </Button>
 
