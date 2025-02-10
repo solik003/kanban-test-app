@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import { Board, BoardsState } from "../../types";
+import { API_BASE_URL } from "../../constants";
 
 const initialState: BoardsState = {
     items: {},
@@ -10,7 +11,7 @@ const initialState: BoardsState = {
     createLoading: false
 };
 
-const API_BASE_URL = import.meta?.env?.REACT_APP_API_URL || "http://localhost:3000/api";
+
 
 export const fetchBoards = createAsyncThunk<Board[]>("boards/fetchBoards", async () => {
     const response = await fetch(`${API_BASE_URL}/boards`);

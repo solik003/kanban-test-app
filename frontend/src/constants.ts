@@ -1,10 +1,2 @@
 
-const {
-    API_BASE_URL,
-    MODE: ENVIRONMENT,
-} = import.meta.env;
-
-export {
-    API_BASE_URL,
-    ENVIRONMENT
-};
+export const API_BASE_URL = process.env.REACT_APP_API_URL || "http://localhost:3000/api";
