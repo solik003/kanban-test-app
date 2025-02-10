@@ -8,7 +8,7 @@ import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 const App: React.FC = () => {
   return (
     <Provider store={store}>
-      <Router basename='/kanban-test-app/'>
+      <Router basename='/kanban-test-app'>
         <Routes>
           <Route path="/" element={<BoardList />} />
           <Route path="/boards" element={<BoardList />} />
