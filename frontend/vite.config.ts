@@ -5,8 +5,7 @@ import react from '@vitejs/plugin-react';
 export default defineConfig({
   base: 'kanban-test-app',
   build: {
-    outDir: 'dist'
+    outDir: 'build'
   },
   plugins: [react()],
-
 })
