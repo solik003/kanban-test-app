@@ -17,6 +17,10 @@ A brief description of your project, explaining what it does and its purpose.
 
 This is the frontend part of the project, built using **React**.
 
+### Live Demo  
+You can check out the live version of the application here:  
+(https://solik003.github.io/kanban-test-app/)  
+
 ### Features
 
 - **Responsive design** for different screen sizes.
